@@ -1,0 +1,62 @@
+﻿apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: {{ .Values.metadata.name }}
+  namespace: {{ .Values.metadata.namespace }}
+spec:
+spec:
+  params:
+    {{- toYaml .Values.params | nindent 4 }}
+  workspaces:
+    {{- toYaml .Values.workspaces | nindent 4 }}
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: {{ .Values.gitclone.url }}
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'false'
+        - name: deleteExisting
+          value: 'true'
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: {{ .Values.gitclone.gitInitImage }}
+        - name: userHome
+          value: /tekton/home
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: {{ .Values.workspace.name }}
+    - name: buildah
+      params:
+        - name: IMAGE
+          value:  {{ .Values.buildah.image }}
+        - name: BUILDER_IMAGE
+          value: {{ .Values.buildah.builderImage }}
+        - name: STORAGE_DRIVER
+          value: vfs
+        - name: DOCKERFILE
+          value: ./{{ .Values.buildah.dockerfile }}
+        - name: CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'false'
+        - name: FORMAT
+          value: oci
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: {{ .Values.workspace.name }}
+  workspaces:
+    - name: {{ .Values.workspace.name }}

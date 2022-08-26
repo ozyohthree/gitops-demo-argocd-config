@@ -1,0 +1,30 @@
+params:
+  - name: GIT_URL
+    type: string
+    description: App git url
+    default: https://github.com/ozyohthree/gitops-demo-inventory.git
+  - name: IMAGE_URL
+    type: string
+    description: Image url
+    default: image-registry.openshift-image-registry.svc:5000/sandbox/gitops-demo-inventory:latest
+workspaces:
+  - name: app-source
+
+metadata:
+  name: gitops-demo-inventory-pipeline
+  namespace: sandbox
+
+gitclone:
+  url: https://github.com/ozyohthree/gitops-demo-inventory.git
+  gitInitImage: registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:8949bb90e05704aef387e5b8d7143f2dc807c8c693c59193a9bb54d8c0e43b21
+
+buildah:
+  image: image-registry.openshift-image-registry.svc:5000/sandbox/gitops-demo-inventory:latest
+  builderImage: registry.redhat.io/rhel8/buildah@sha256:23fb7971ea6ac4aaaaa1139473a602df0df19222a3b5a76b551b2b9ddd92e927
+  dockerfile: Dockerfile.build
+
+workspace:
+  name: inventory-app
+
+# registry.redhat.io/rhel8/buildah@sha256:23fb7971ea6ac4aaaaa1139473a602df0df19222a3b5a76b551b2b9ddd92e927
+# registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:8949bb90e05704aef387e5b8d7143f2dc807c8c693c59193a9bb54d8c0e43b21
