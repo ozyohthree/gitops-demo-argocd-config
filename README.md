@@ -1,1 +1,1 @@
-# gitops-demo-argocd-config
+# gitops-demo-cicd-config
