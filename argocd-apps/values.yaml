@@ -1,0 +1,13 @@
+apps:
+  - source: 
+      helm:
+        releaseName: gitops-demo-inventory-app
+        path: inventory-app
+        repoURL: https://github.com/ozyohthree/gitops-demo-deploy-config.git
+        targetRevision: main
+  - source: 
+      helm:
+        releaseName: gitops-demo-system-app
+        path: system-app
+        repoURL: https://github.com/ozyohthree/gitops-demo-deploy-config.git
+        targetRevision: main

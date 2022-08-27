@@ -1,0 +1,20 @@
+{{- range $apps := .Values.apps }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-app-gitops-demo
+spec:
+  destination:
+    namespace: sandbox
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    helm:
+      releaseName: {{ $apps.source.helm.releaseName }}
+    path: {{ $apps.source.helm.path }}
+    repoURL: {{ $apps.source.helm.repoURL }}
+    targetRevision: {{ $apps.source.helm.targetRevision }}
+  syncPolicy:
+    automated:
+      prune: true
+{{- end }}  

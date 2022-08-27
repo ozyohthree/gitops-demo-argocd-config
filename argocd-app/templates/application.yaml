@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-app-gitops-demo
+spec:
+  destination:
+    namespace: sandbox
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    helm:
+      releaseName: {{ .Values.source.helm.releaseName }}
+    path: {{ .Values.source.helm.path }}
+    repoURL: {{ .Values.source.helm.repoURL }}
+    targetRevision: {{ .Values.source.helm.targetRevision }}
+  syncPolicy:
+    automated:
+      prune: true
