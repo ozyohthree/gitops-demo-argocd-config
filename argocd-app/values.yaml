@@ -4,3 +4,8 @@ source:
     path: argocd-apps
     repoURL: https://github.com/ozyohthree/gitops-demo-cicd-config.git
     targetRevision: main
+
+git:  
+  url: https://github.com/ozyohthree/gitops-demo-deploy-config.git
+  username: 
+  password: 

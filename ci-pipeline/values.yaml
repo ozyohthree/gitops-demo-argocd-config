@@ -1,6 +1,6 @@
 metadata:
   name: gitops-ci-pipeline
-  namespace: sandbox
+  namespace: cicd
 
 params:
   - name: GIT_URL
@@ -10,7 +10,7 @@ params:
   - name: IMAGE_URL
     type: string
     description: Image url
-    default: image-registry.openshift-image-registry.svc:5000/sandbox/gitops-demo-system:latest
+    default: image-registry.openshift-image-registry.svc:5000/cicd/gitops-demo-system:latest
 workspaces:
   - name: WORKSPACE
 
